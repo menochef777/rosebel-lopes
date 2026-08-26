@@ -13,6 +13,10 @@
   <!-- Lenis for buttery-smooth inertial scrolling -->
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 
+  <!-- GSAP & ScrollTrigger for Pixel-Exact Card Stacking -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
   <style>
     :root {
       --bg-dark: #07080a;
@@ -580,163 +584,257 @@
     }
 
     /* ============================================================
-       3. VITRINE DE IMÓVEIS COM SCROLL STACK (Sticky Stacking)
+       3. VITRINE DE OPORTUNIDADES (SOLID DARK BG & GSAP SCROLL STACK)
        ============================================================ */
-    .filter-tabs {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 32px;
+    .showcase-outer-section {
+      background-color: #080A19;
+      position: relative;
+      z-index: 30;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      margin-right: calc(-50vw + 50%);
+      padding: 96px 0;
+      box-shadow: 0 -20px 40px rgba(0,0,0,0.5), 0 20px 40px rgba(0,0,0,0.5);
     }
 
-    .filter-tab {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #cbd5e1;
-      padding: 8px 18px;
-      border-radius: 100px;
-      font-family: var(--font-body);
-      font-size: 13px;
-      font-weight: 600;
+    .showcase-container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    @media (min-width: 768px) {
+      .showcase-container {
+        padding: 0 48px;
+      }
+    }
+
+    .showcase-title {
+      color: #ffffff;
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .showcase-filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 64px;
+    }
+
+    .filter-pill {
+      height: 42px;
+      padding: 0 24px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       transition: all 0.25s ease;
+      text-decoration: none;
     }
 
-    .filter-tab:hover, .filter-tab.active {
-      background: var(--accent-orange);
+    .filter-pill.active {
+      background-color: #ffffff;
+      color: #000000;
+      border: 1px solid #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .filter-pill.inactive {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .filter-pill.inactive:hover {
+      background-color: rgba(255, 255, 255, 0.1);
       color: #ffffff;
-      border-color: var(--accent-orange);
-      box-shadow: 0 4px 15px rgba(255, 106, 61, 0.35);
     }
 
-    /* Scroll Stack Container (reactbits.dev inspired) */
-    .properties-grid {
+    /* Scroll Stack Cards Wrapper (Reactbits & Glasshaven Style) */
+    .scroll-stack-wrapper {
       display: flex;
       flex-direction: column;
-      gap: 20px;
       position: relative;
+      width: 100%;
       padding-bottom: 20px;
     }
 
-    .property-card {
+    .scroll-stack-card {
       position: sticky;
-      top: 110px;
-      background: rgba(12, 16, 22, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 24px;
-      overflow: hidden;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.3s ease;
-      display: grid;
-      grid-template-columns: 1.1fr 1.4fr;
-      gap: 28px;
-      padding: 24px;
-      align-items: center;
-      box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      will-change: transform, top;
-      transform: translateZ(0);
-      margin-bottom: 24px;
-    }
-
-    .property-card:nth-child(1) { top: 110px; }
-    .property-card:nth-child(2) { top: 130px; }
-    .property-card:nth-child(3) { top: 150px; }
-
-    .property-card:hover {
-      border-color: var(--card-border-hover);
-      box-shadow: 0 30px 60px -10px rgba(255, 106, 61, 0.25);
-    }
-
-    .property-img-box {
+      top: calc(100px + (var(--index, 0) * 20px));
       width: 100%;
-      height: 230px;
-      border-radius: 16px;
-      background: #0d1116;
+      max-width: 1200px;
+      margin: 0 auto 96px auto;
+      min-height: 550px;
+      height: auto;
+      border-radius: 24px;
+      background-color: #141620;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      will-change: transform, opacity, filter;
+      transform-origin: center top;
+      transition: border-color 0.3s ease;
+    }
+
+    @media (min-width: 768px) {
+      .scroll-stack-card {
+        height: 550px;
+        flex-direction: row;
+      }
+    }
+
+    .scroll-stack-card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .card-img-wrapper {
+      width: 100%;
+      height: 280px;
       position: relative;
       overflow: hidden;
     }
 
-    .property-badge {
+    @media (min-width: 768px) {
+      .card-img-wrapper {
+        width: 55%;
+        height: 100%;
+      }
+    }
+
+    .card-img-wrapper img {
       position: absolute;
-      top: 12px;
-      left: 12px;
-      background: rgba(7, 8, 10, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #ffffff;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
-      backdrop-filter: blur(8px);
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .property-badge.urgent {
-      background: rgba(255, 77, 0, 0.85);
-      border-color: #ff6a3d;
+    .scroll-stack-card:hover .card-img-wrapper img {
+      transform: scale(1.04);
     }
 
-    .property-details {
-      padding: 10px 14px;
+    .card-content-wrapper {
+      width: 100%;
+      padding: 32px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      flex: 1;
+      justify-content: center;
     }
 
-    .property-price {
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--accent-orange);
+    @media (min-width: 768px) {
+      .card-content-wrapper {
+        width: 45%;
+        padding: 48px;
+      }
     }
 
-    .property-title {
-      font-family: var(--font-display);
-      font-size: 17px;
-      font-weight: 700;
+    .card-status-badge {
+      padding: 8px 16px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      font-size: 12px;
       color: #ffffff;
-      line-height: 1.3;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      width: fit-content;
+      margin-bottom: 24px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    .property-loc {
-      font-size: 13px;
-      color: var(--text-muted);
+    .card-price {
+      font-size: clamp(36px, 3.5vw, 48px);
+      color: #ffffff;
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: 12px;
+      font-family: var(--font-display);
+    }
+
+    .card-title {
+      font-size: clamp(22px, 2vw, 28px);
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 8px;
+      font-family: var(--font-display);
+      font-weight: 700;
+    }
+
+    .card-location {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 14px;
+      margin-bottom: 32px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
-    .property-features {
-      display: flex;
-      justify-content: space-between;
+    .card-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 12px;
-      font-size: 12.5px;
-      color: #cbd5e1;
+      padding-top: 20px;
+    }
+
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .spec-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
       font-family: var(--font-mono);
     }
 
-    .property-cta {
-      margin-top: 6px;
-      width: 100%;
-      text-align: center;
-      padding: 10px 0;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px;
+    .spec-value {
+      font-size: 16px;
       color: #ffffff;
-      text-decoration: none;
-      font-size: 13px;
       font-weight: 600;
-      transition: all 0.25s ease;
-      display: block;
+      font-family: var(--font-body);
     }
 
-    .property-cta:hover {
-      background: var(--accent-orange);
-      border-color: var(--accent-orange);
+    .card-cta-btn {
+      width: 100%;
+      height: 52px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      color: #0A0707;
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .card-cta-btn:hover {
+      background-color: #e2e8f0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
     }
 
     /* ============================================================
@@ -1275,94 +1373,179 @@
       </div>
     </section>
 
-    <!-- 3. VITRINE DE IMÓVEIS (FILTROS INTERATIVOS) -->
-    <section id="imoveis" class="glass-section">
-      <div class="section-header">
-        <h2 class="section-title">VITRINE DE OPORTUNIDADES SELECIONADAS</h2>
-        <p class="section-subtitle">Filtre as melhores opções para o seu perfil e orçamento com condições exclusivas de negociação.</p>
-      </div>
-
-      <!-- Filtros Rápidos -->
-      <div class="filter-tabs">
-        <button class="filter-tab active" data-filter="all">Todos os Imóveis</button>
-        <button class="filter-tab" data-filter="prontos">Imóveis Prontos</button>
-        <button class="filter-tab" data-filter="lancamentos">Lançamentos</button>
-        <button class="filter-tab" data-filter="ate700k">Até R$ 700 mil</button>
-        <button class="filter-tab" data-filter="1mplus">R$ 1M+ & Alto Padrão</button>
-      </div>
-
-      <!-- Grid de Imóveis -->
-      <div class="properties-grid">
-        <!-- Imóvel 1 -->
-        <div class="property-card" data-category="lancamentos ate700k">
-          <div class="property-img-box">
-            <svg viewBox="0 0 400 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="250" fill="#12171e"/>
-              <polygon points="50,220 180,80 350,150 350,220" fill="#1b232e"/>
-              <rect x="120" y="130" width="60" height="50" fill="#ff6a3d" opacity="0.8" rx="3"/>
-              <rect x="200" y="110" width="80" height="60" fill="#ff7a45" opacity="0.6" rx="3"/>
-            </svg>
-            <div class="property-badge urgent">🔥 Tabela Zero</div>
-          </div>
-          <div class="property-details">
-            <div class="property-price">R$ 489.000</div>
-            <div class="property-title">Residencial Vista Carrão — Lançamento</div>
-            <div class="property-loc">📍 Vila Carrão, São Paulo (A 400m do Metrô)</div>
-            <div class="property-features">
-              <span>58 m²</span>
-              <span>2 Dorms (1 Suíte)</span>
-              <span>1 Vaga</span>
-            </div>
-            <a href="https://wa.me/5511981408548?text=Olá,%20gostaria%20de%20receber%20a%20tabela%20do%20Residencial%20Vista%20Carrão." target="_blank" class="property-cta">Receber Tabela & Planta ↗</a>
-          </div>
+    <!-- 3. VITRINE DE OPORTUNIDADES (SOLID DARK BG & GSAP SCROLL STACK) -->
+    <section id="imoveis" class="showcase-outer-section">
+      <div class="showcase-container">
+        
+        <!-- Header -->
+        <h2 class="showcase-title">VITRINE DE OPORTUNIDADES</h2>
+        
+        <!-- Filters Row -->
+        <div class="showcase-filters-row">
+          <button class="filter-pill active" data-filter="all">Todos os Imóveis</button>
+          <button class="filter-pill inactive" data-filter="lancamentos">Lançamentos</button>
+          <button class="filter-pill inactive" data-filter="prontos">Prontos para Morar</button>
+          <button class="filter-pill inactive" data-filter="construcao">Em Construção</button>
+          <button class="filter-pill inactive" data-filter="altopadrao">Alto Padrão & Coberturas</button>
         </div>
 
-        <!-- Imóvel 2 -->
-        <div class="property-card" data-category="prontos 1mplus">
-          <div class="property-img-box">
-            <svg viewBox="0 0 400 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="250" fill="#141a22"/>
-              <rect x="80" y="50" width="240" height="170" rx="6" fill="#1e2733"/>
-              <rect x="110" y="80" width="75" height="55" fill="#ff6a3d" opacity="0.75" rx="3"/>
-              <rect x="210" y="80" width="75" height="55" fill="#ff6a3d" opacity="0.75" rx="3"/>
-            </svg>
-            <div class="property-badge">Pronto para Morar</div>
-          </div>
-          <div class="property-details">
-            <div class="property-price">R$ 1.250.000</div>
-            <div class="property-title">Edifício Anália Park — Varanda Gourmet</div>
-            <div class="property-loc">📍 Jardim Anália Franco, São Paulo</div>
-            <div class="property-features">
-              <span>96 m²</span>
-              <span>3 Suítes</span>
-              <span>2 Vagas</span>
+        <!-- Scroll Stack Cards Wrapper -->
+        <div class="scroll-stack-wrapper">
+          
+          <!-- Card 1 -->
+          <div class="scroll-stack-card" style="--index: 0;" data-category="lancamentos altopadrao">
+            <div class="card-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1200" alt="Reserva Diálogo Anália Franco" loading="lazy">
             </div>
-            <a href="https://wa.me/5511981408548?text=Olá,%20gostaria%20de%20agendar%20visita%20no%20Edifício%20Anália%20Park." target="_blank" class="property-cta">Agendar Visita Exclusiva ↗</a>
+            <div class="card-content-wrapper">
+              <span class="card-status-badge">LANÇAMENTO EXCLUSIVO</span>
+              <div class="card-price">R$ 1.850.000</div>
+              <div class="card-title">Reserva Diálogo Anália Franco</div>
+              <div class="card-location">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Jardim Anália Franco, São Paulo</span>
+              </div>
+              <div class="card-specs-grid">
+                <div class="spec-item">
+                  <span class="spec-label">Metragem</span>
+                  <span class="spec-value">142 m² Privativos</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Dormitórios</span>
+                  <span class="spec-value">3 Suítes Plenas</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Vagas</span>
+                  <span class="spec-value">2 Vagas Determinadas</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Lazer</span>
+                  <span class="spec-value">Resort Privativo</span>
+                </div>
+              </div>
+              <a href="https://wa.me/5511981408548?text=Olá,%20Rosebel!%20Gostaria%20de%20receber%20a%20tabela%20e%20plantas%20do%20Reserva%20Diálogo%20Anália%20Franco." target="_blank" class="card-cta-btn">
+                <span>Receber Tabela & Plantas</span>
+                <span>↗</span>
+              </a>
+            </div>
           </div>
+
+          <!-- Card 2 -->
+          <div class="scroll-stack-card" style="--index: 1;" data-category="prontos altopadrao">
+            <div class="card-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=1200" alt="Grand Tatuapé Sky View" loading="lazy">
+            </div>
+            <div class="card-content-wrapper">
+              <span class="card-status-badge">PRONTO PARA MORAR</span>
+              <div class="card-price">R$ 980.000</div>
+              <div class="card-title">Grand Tatuapé Sky View</div>
+              <div class="card-location">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Tatuapé, São Paulo (A 300m do Shopping)</span>
+              </div>
+              <div class="card-specs-grid">
+                <div class="spec-item">
+                  <span class="spec-label">Metragem</span>
+                  <span class="spec-value">86 m²</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Dormitórios</span>
+                  <span class="spec-value">3 Dorms (1 Suíte)</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Vagas</span>
+                  <span class="spec-value">2 Vagas Cobertas</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Varanda</span>
+                  <span class="spec-value">Gourmet com Churrasqueira</span>
+                </div>
+              </div>
+              <a href="https://wa.me/5511981408548?text=Olá,%20Rosebel!%20Gostaria%20de%20agendar%20uma%20visita%20no%20Grand%20Tatuapé%20Sky%20View." target="_blank" class="card-cta-btn">
+                <span>Agendar Visita Exclusiva</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="scroll-stack-card" style="--index: 2;" data-category="construcao lancamentos">
+            <div class="card-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=1200" alt="Orbya Carrão Residence" loading="lazy">
+            </div>
+            <div class="card-content-wrapper">
+              <span class="card-status-badge">EM CONSTRUÇÃO</span>
+              <div class="card-price">R$ 549.000</div>
+              <div class="card-title">Orbya Carrão Residence</div>
+              <div class="card-location">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Vila Carrão, São Paulo (Nova Estação Metrô)</span>
+              </div>
+              <div class="card-specs-grid">
+                <div class="spec-item">
+                  <span class="spec-label">Metragem</span>
+                  <span class="spec-value">64 m²</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Dormitórios</span>
+                  <span class="spec-value">2 Dorms (1 Suíte)</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Vagas</span>
+                  <span class="spec-value">1 Vaga Livre</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Condição</span>
+                  <span class="spec-value">Entrada Facilitada em 24x</span>
+                </div>
+              </div>
+              <a href="https://wa.me/5511981408548?text=Olá,%20Rosebel!%20Quero%20simular%20o%20fluxo%20de%20pagamento%20do%20Orbya%20Carrão." target="_blank" class="card-cta-btn">
+                <span>Simular Fluxo de Obras</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="scroll-stack-card" style="--index: 3;" data-category="altopadrao prontos">
+            <div class="card-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200" alt="Penthouse Mooca Privilège" loading="lazy">
+            </div>
+            <div class="card-content-wrapper">
+              <span class="card-status-badge">COBERTURA DUPLEX</span>
+              <div class="card-price">R$ 2.450.000</div>
+              <div class="card-title">Penthouse Mooca Privilège</div>
+              <div class="card-location">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Alto da Mooca, São Paulo</span>
+              </div>
+              <div class="card-specs-grid">
+                <div class="spec-item">
+                  <span class="spec-label">Metragem</span>
+                  <span class="spec-value">198 m²</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Dormitórios</span>
+                  <span class="spec-value">4 Suítes + Piscina Privativa</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Vagas</span>
+                  <span class="spec-value">3 Vagas + Depósito</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Vista</span>
+                  <span class="spec-value">Panorâmica 360°</span>
+                </div>
+              </div>
+              <a href="https://wa.me/5511981408548?text=Olá,%20Rosebel!%20Gostaria%20de%20uma%20apresentação%20private%20da%20Penthouse%20Mooca." target="_blank" class="card-cta-btn">
+                <span>Consultar Apresentação Private</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Imóvel 3 -->
-        <div class="property-card" data-category="lancamentos ate700k">
-          <div class="property-img-box">
-            <svg viewBox="0 0 400 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="250" fill="#0f141a"/>
-              <polygon points="80,220 200,60 320,130 320,220" fill="#1a222c"/>
-              <rect x="130" y="110" width="60" height="60" fill="#ff7a45" opacity="0.8" rx="3"/>
-            </svg>
-            <div class="property-badge">Em Construção</div>
-          </div>
-          <div class="property-details">
-            <div class="property-price">R$ 670.000</div>
-            <div class="property-title">Grand Tatuapé Sky — Lazer de Resort</div>
-            <div class="property-loc">📍 Tatuapé, São Paulo (Próximo ao Parque Ceret)</div>
-            <div class="property-features">
-              <span>68 m²</span>
-              <span>2 Dorms (1 Suíte)</span>
-              <span>1 Vaga Coberta</span>
-            </div>
-            <a href="https://wa.me/5511981408548?text=Olá,%20quero%20ver%20o%20fluxo%20de%20pagamento%20do%20Grand%20Tatuapé." target="_blank" class="property-cta">Simular Fluxo de Obras ↗</a>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1767,29 +1950,76 @@
     }
 
     // ============================================================
-    // INTERATIVIDADE: FILTROS DA VITRINE DE IMÓVEIS
+    // GSAP SCROLLTRIGGER: REACTBITS / GLASSHAVEN CARD STACKING
     // ============================================================
-    const filterTabs = document.querySelectorAll('.filter-tab');
-    const propertyCards = document.querySelectorAll('.property-card');
+    function initScrollStackAnimations() {
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
 
-    filterTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        filterTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-
-        const filter = tab.getAttribute('data-filter');
-        propertyCards.forEach(card => {
-          if (filter === 'all') {
-            card.style.display = 'flex';
-          } else {
-            const categories = card.getAttribute('data-category') || '';
-            if (categories.includes(filter)) {
-              card.style.display = 'flex';
-            } else {
-              card.style.display = 'none';
-            }
+        // Clear existing ScrollTriggers for cards to prevent duplicate triggers
+        ScrollTrigger.getAll().forEach(st => {
+          if (st.vars && st.vars.id && st.vars.id.startsWith('stack-')) {
+            st.kill();
           }
         });
+
+        const cards = gsap.utils.toArray('.scroll-stack-card');
+        const visibleCards = cards.filter(c => window.getComputedStyle(c).display !== 'none');
+
+        visibleCards.forEach((card, index) => {
+          if (index < visibleCards.length - 1) {
+            const nextCard = visibleCards[index + 1];
+            gsap.to(card, {
+              scale: 0.95,
+              opacity: 0.5,
+              filter: 'brightness(0.6)',
+              ease: 'power1.out',
+              scrollTrigger: {
+                id: `stack-${index}`,
+                trigger: nextCard,
+                start: 'top bottom-=50',
+                end: 'top 30%',
+                scrub: true
+              }
+            });
+          }
+        });
+      }
+    }
+
+    // ============================================================
+    // INTERATIVIDADE: FILTROS DA VITRINE DE IMÓVEIS
+    // ============================================================
+    const filterPills = document.querySelectorAll('.filter-pill');
+    const stackCards = document.querySelectorAll('.scroll-stack-card');
+
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => {
+          p.classList.remove('active');
+          p.classList.add('inactive');
+        });
+        pill.classList.add('active');
+        pill.classList.remove('inactive');
+
+        const filter = pill.getAttribute('data-filter');
+        let visibleIndex = 0;
+
+        stackCards.forEach(card => {
+          const categories = card.getAttribute('data-category') || '';
+          if (filter === 'all' || categories.includes(filter)) {
+            card.style.display = 'flex';
+            card.style.setProperty('--index', visibleIndex);
+            visibleIndex++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (typeof ScrollTrigger !== 'undefined') {
+          ScrollTrigger.refresh();
+          initScrollStackAnimations();
+        }
       });
     });
 
@@ -1808,11 +2038,15 @@
       });
     });
 
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+    });
 
     // Init
     resizeCanvas();
     preloadAllFrames();
+    initScrollStackAnimations();
     requestAnimationFrame(animate);
   </script>
 </body>
