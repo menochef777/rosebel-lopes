@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = process.env.PORT || 3008;
+const PORT = process.env.PORT || 8080;
 const MIME_TYPES = {
   '.html': 'text/html',
   '.js': 'text/javascript',
@@ -38,9 +38,10 @@ const server = http.createServer((req, res) => {
     } else {
       res.writeHead(200, {
         'Content-Type': contentType,
-        'Cache-Control': 'public, max-age=31536000'
+        'Cache-Control': 'public, max-age=31536000',
+        'Access-Control-Allow-Origin': '*'
       });
-      res.end(content, 'utf-8');
+      res.end(content);
     }
   });
 });
