@@ -1559,16 +1559,16 @@
 
       if (!root || !track || !stage || !frame || !media) return;
 
-      // ScrollExpand Props Configuration
+      // ScrollExpand Props Configuration - Fast & Snappy
       const config = {
-        startWidth: window.innerWidth < 768 ? 84 : 46,
-        startHeight: window.innerWidth < 768 ? 64 : 60,
+        startWidth: window.innerWidth < 768 ? 84 : 48,
+        startHeight: window.innerWidth < 768 ? 64 : 62,
         startRadius: 28,
         endRadius: 0,
-        mediaZoom: 1.35,
-        scrollDistance: 1.2,
-        holdDistance: 0.35,
-        smoothing: 0.08,
+        mediaZoom: 1.25,
+        scrollDistance: 0.55, // Snappy expansion (half viewport scroll)
+        holdDistance: 0.05,   // No dead black space
+        smoothing: 0.05,     // Fast responsive follow time
         overlayScrim: 0.55,
         useWindowScroll: true,
         enabled: true
@@ -1581,7 +1581,7 @@
       let isRunning = false;
 
       function applyProgress(p) {
-        const e = smoothstep(0, 1, p);
+        const e = smoothstep(0, 0.85, p);
 
         // Calculate frame width, height, insets and corner radius
         const w = config.startWidth + (100 - config.startWidth) * e;
@@ -1600,26 +1600,26 @@
           scrim.style.opacity = `${config.overlayScrim * e}`;
         }
 
-        // Resting title lifts away and fades out
+        // Resting title lifts away and fades out quickly
         if (title) {
-          const out = smoothstep(0.35, 0.85, p);
+          const out = smoothstep(0.1, 0.45, p);
           title.style.opacity = `${1 - out}`;
-          title.style.transform = `translate3d(0, ${-32 * out}px, 0) scale(${1 + 0.06 * out})`;
+          title.style.transform = `translate3d(0, ${-28 * out}px, 0) scale(${1 + 0.05 * out})`;
         }
 
         // Hint fades out immediately
         if (hint) {
-          const gone = smoothstep(0, 0.15, p);
+          const gone = smoothstep(0, 0.1, p);
           hint.style.opacity = `${1 - gone}`;
           hint.style.transform = `translate3d(0, ${10 * gone}px, 0)`;
         }
 
-        // Overlay content fades in at full bleed
+        // Overlay content fades in smoothly as frame opens
         if (overlay) {
-          const inn = smoothstep(0.68, 1, p);
+          const inn = smoothstep(0.4, 0.8, p);
           overlay.style.opacity = `${inn}`;
-          overlay.style.transform = `translate3d(0, ${20 * (1 - inn)}px, 0)`;
-          overlay.style.pointerEvents = inn > 0.7 ? 'auto' : 'none';
+          overlay.style.transform = `translate3d(0, ${18 * (1 - inn)}px, 0)`;
+          overlay.style.pointerEvents = inn > 0.5 ? 'auto' : 'none';
         }
       }
 
