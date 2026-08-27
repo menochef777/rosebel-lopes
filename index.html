@@ -153,72 +153,144 @@
     }
 
     /* =========================================================
-       HERO 1: CONTINUOUS SEAMLESS LOOP EXTENDING TO SECTION 2
+       REACT BITS: SCROLLEXPAND COMPONENT CSS
        ========================================================= */
-    .hero-extended-wrapper {
+    .scroll-expand {
       position: relative;
       width: 100%;
       background-color: var(--bg-main);
-      overflow: hidden;
     }
 
-    /* Background Canvas that seamlessly loops under Hero 1 and top sections */
-    .hero-bg-canvas-container {
-      position: absolute;
+    .scroll-expand__track {
+      position: relative;
+      width: 100%;
+    }
+
+    .scroll-expand__stage {
+      position: sticky;
       top: 0;
-      left: 0;
       width: 100%;
-      height: 100%;
-      max-height: 1900px;
-      z-index: 1;
-      pointer-events: none;
+      height: 100vh;
       overflow: hidden;
+      --se-title-size: clamp(2rem, 5vw, 4.5rem);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-main);
     }
 
-    #hero1-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      opacity: 0.55;
-    }
-
-    /* Gradient overlay that fades into solid #07080A smoothly before section 2 */
-    .hero-bg-gradient {
+    .scroll-expand__frame {
       position: absolute;
       inset: 0;
-      z-index: 2;
-      background: linear-gradient(
-        180deg, 
-        rgba(7, 8, 10, 0.35) 0%, 
-        rgba(7, 8, 10, 0.45) 40%, 
-        rgba(7, 8, 10, 0.75) 70%, 
-        #07080A 100%
-      );
-      pointer-events: none;
+      clip-path: inset(21% 29% 21% 29% round 24px);
+      will-change: clip-path;
+      overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
     }
 
-    /* Main Hero 1 Banner */
-    .hero-main-section {
-      position: relative;
-      z-index: 5;
-      min-height: 100vh;
+    .scroll-expand__media {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      will-change: transform;
+      transform-origin: center;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .scroll-expand__scrim {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(7, 8, 10, 0.95) 0%, rgba(7, 8, 10, 0.3) 50%, rgba(7, 8, 10, 0.6) 100%);
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    .scroll-expand__overlay {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
-      padding: 120px 20px 60px 20px;
-      max-width: 1240px;
+      text-align: center;
+      padding: 100px 24px 60px 24px;
+      opacity: 0;
+      will-change: opacity, transform;
+      z-index: 10;
+      max-width: 960px;
       margin: 0 auto;
     }
-    @media (min-width: 768px) {
-      .hero-main-section {
-        padding: 140px 48px 80px 48px;
-      }
+
+    .scroll-expand__title {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0 6%;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: var(--se-title-size);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: #fff;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+      will-change: opacity, transform;
+      z-index: 5;
+    }
+    .scroll-expand__title span {
+      color: var(--gold-accent);
+    }
+    .scroll-expand__title-tag {
+      font-family: var(--font-mono);
+      font-size: clamp(11px, 1.2vw, 13px);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold-accent);
+      margin-bottom: 12px;
+      font-weight: 600;
     }
 
-    .hero-content {
-      max-width: 880px;
+    .scroll-expand__hint {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 2rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+      will-change: opacity, transform;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .scroll-expand__hint-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--gold-accent);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
     }
 
+    /* Hero Content Elements Inside ScrollExpand Overlay */
     .hero-tag {
       color: var(--gold-accent);
       font-family: var(--font-mono);
@@ -239,11 +311,12 @@
     .hero-h1 {
       color: #ffffff;
       font-family: var(--font-sans);
-      font-size: clamp(38px, 6.5vw, 76px);
-      line-height: 1.04;
+      font-size: clamp(34px, 5.5vw, 68px);
+      line-height: 1.05;
       letter-spacing: -0.03em;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       font-weight: 800;
+      max-width: 840px;
     }
     .hero-h1 span {
       background: linear-gradient(135deg, #ffffff 30%, var(--gold-accent) 100%);
@@ -252,34 +325,38 @@
     }
 
     .hero-desc {
-      font-size: clamp(16px, 1.8vw, 20px);
-      color: rgba(255, 255, 255, 0.75);
-      line-height: 1.5;
-      margin-bottom: 36px;
-      max-width: 640px;
+      font-size: clamp(15px, 1.6vw, 18px);
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.55;
+      margin-bottom: 32px;
+      max-width: 620px;
     }
 
     .hero-buttons {
       display: flex;
       flex-direction: column;
       gap: 16px;
+      width: 100%;
+      max-width: 480px;
+      justify-content: center;
     }
     @media (min-width: 640px) {
       .hero-buttons {
         flex-direction: row;
-        align-items: center;
+        max-width: none;
+        width: auto;
       }
     }
 
     .btn-hero-primary {
-      height: 54px;
+      height: 52px;
       width: 100%;
       padding: 0 32px;
       background: #ffffff;
       color: #07080a;
       border-radius: 9999px;
       font-weight: 600;
-      font-size: 15px;
+      font-size: 14.5px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -297,15 +374,15 @@
     }
 
     .btn-hero-secondary {
-      height: 54px;
+      height: 52px;
       width: 100%;
       padding: 0 32px;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: #ffffff;
       border-radius: 9999px;
       font-weight: 500;
-      font-size: 15px;
+      font-size: 14.5px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -333,17 +410,17 @@
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 20px 20px 50px 20px;
+      padding: 60px 20px 40px 20px;
     }
     @media (min-width: 768px) {
-      .partners-section { padding: 30px 48px 60px 48px; }
+      .partners-section { padding: 80px 48px 40px 48px; }
     }
     .partners-title {
       font-family: var(--font-mono);
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.45);
       margin-bottom: 20px;
       text-align: center;
     }
@@ -1029,130 +1106,149 @@
   </header>
 
   <!-- =========================================================
-       HERO EXTENDED WRAPPER (VIDEO IN CONTINUOUS LOOP EXTENDING TO SECTION 2)
+       HERO: INTEGRATED <SCROLLEXPAND /> COMPONENT FROM REACT BITS
        ========================================================= -->
-  <div class="hero-extended-wrapper" id="inicio">
-    
-    <!-- Background Loop Canvas -->
-    <div class="hero-bg-canvas-container">
-      <canvas id="hero1-canvas"></canvas>
-      <div class="hero-bg-gradient"></div>
+  <div class="scroll-expand" id="hero-scroll-expand">
+    <div class="scroll-expand__track" id="se-track">
+      <div class="scroll-expand__stage" id="se-stage">
+        
+        <!-- Expanding frame with clipPath, rounded corners and dynamic scale -->
+        <div class="scroll-expand__frame" id="se-frame">
+          
+          <!-- Media: Smooth 175-frame Drone Ascent & Cars Moving Loop -->
+          <canvas id="hero1-canvas" class="scroll-expand__media"></canvas>
+          
+          <!-- Gradient Scrim overlay that eases in -->
+          <div class="scroll-expand__scrim" id="se-scrim"></div>
+          
+          <!-- Overlay Content: Reveals when frame reaches full bleed -->
+          <div class="scroll-expand__overlay" id="se-overlay">
+            <div class="hero-tag">
+              <span>✦</span>
+              <span>Consultoria Imobiliária de Alto Padrão • CRECI 205572</span>
+            </div>
+            <h1 class="hero-h1">
+              O imóvel ideal para<br>
+              <span>o seu momento.</span>
+            </h1>
+            <p class="hero-desc">
+              Curadoria exclusiva dos melhores lançamentos e coberturas de altíssimo padrão nas regiões mais nobres de São Paulo.
+            </p>
+            <div class="hero-buttons">
+              <a href="https://wa.me/5511981408548?text=Olá,%20Rosebel!%20Gostaria%20de%20falar%20no%20WhatsApp." target="_blank" class="btn-hero-primary">
+                <span>Falar no WhatsApp</span>
+                <span>↗</span>
+              </a>
+              <a href="#vitrine" class="btn-hero-secondary">
+                <span>📥 Ver Vitrine & Tabela de Preços</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Resting Headline Title that lifts away as media opens up -->
+        <div class="scroll-expand__title" id="se-title">
+          <div class="scroll-expand__title-tag">Exclusividade & Alto Padrão</div>
+          <div>Rosebel Lopes<span>.</span></div>
+        </div>
+
+        <!-- Cue Hint under the resting frame -->
+        <div class="scroll-expand__hint" id="se-hint">
+          <div class="scroll-expand__hint-dot"></div>
+          <span>Role para expandir</span>
+        </div>
+
+      </div>
     </div>
+  </div>
 
-    <!-- Hero Main Section -->
-    <section class="hero-main-section">
-      <div class="hero-content fade-up in-view">
-        <div class="hero-tag">
-          <span>✦</span>
-          <span>Consultoria Imobiliária de Alto Padrão • CRECI 205572</span>
+  <!-- CONSTRUTORAS PARCEIRAS -->
+  <section id="parceiros" class="partners-section fade-up">
+    <div class="partners-title">Construtoras & Incorporadoras Parceiras</div>
+    <div class="partners-grid">
+      <div class="partner-item silver-glass silver-glass-hover">CYRELA<span>.</span></div>
+      <div class="partner-item silver-glass silver-glass-hover">DIÁLOGO<span>.</span></div>
+      <div class="partner-item silver-glass silver-glass-hover">MITRE<span>.</span></div>
+      <div class="partner-item silver-glass silver-glass-hover">LAVVI<span>.</span></div>
+    </div>
+  </section>
+
+  <!-- BAIRROS ATENDIDOS -->
+  <section id="bairros" class="bairros-section fade-up">
+    <h2 class="section-title">POLOS DE VALORIZAÇÃO EM SÃO PAULO</h2>
+    <p class="section-sub">Especialista nas regiões com maior infraestrutura, liquidez e qualidade de vida da capital paulista.</p>
+    
+    <div class="bairros-grid">
+      <!-- Vila Carrão -->
+      <div class="bairro-card silver-glass silver-glass-hover">
+        <div class="bairro-header">
+          <span class="bairro-badge">Expansão Metrô</span>
+          <span style="color: var(--gold-accent);">★ 4.9</span>
         </div>
-        <h1 class="hero-h1">
-          O imóvel ideal para<br>
-          <span>o seu momento.</span>
-        </h1>
-        <p class="hero-desc">
-          Curadoria exclusiva dos melhores lançamentos e empreendimentos prontos nas regiões mais nobres de São Paulo.
-        </p>
-        <div class="hero-buttons">
-          <a href="https://wa.me/5511981408548?text=Olá,%20Rosebel!%20Gostaria%20de%20falar%20no%20WhatsApp." target="_blank" class="btn-hero-primary">
-            <span>Falar no WhatsApp</span>
-            <span>↗</span>
-          </a>
-          <a href="#vitrine" class="btn-hero-secondary">
-            <span>📥 Ver Vitrine & Tabela de Preços</span>
-          </a>
+        <div class="bairro-name">Vila Carrão</div>
+        <div class="bairro-stat">
+          <span>Valorização:</span>
+          <strong>+14% / ano</strong>
         </div>
-      </div>
-    </section>
-
-    <!-- CONSTRUTORAS PARCEIRAS (Seamlessly over the video loop background) -->
-    <section id="parceiros" class="partners-section fade-up">
-      <div class="partners-title">Construtoras & Incorporadoras Parceiras</div>
-      <div class="partners-grid">
-        <div class="partner-item silver-glass silver-glass-hover">CYRELA<span>.</span></div>
-        <div class="partner-item silver-glass silver-glass-hover">DIÁLOGO<span>.</span></div>
-        <div class="partner-item silver-glass silver-glass-hover">MITRE<span>.</span></div>
-        <div class="partner-item silver-glass silver-glass-hover">LAVVI<span>.</span></div>
-      </div>
-    </section>
-
-    <!-- BAIRROS ATENDIDOS (Seamlessly over the video loop background) -->
-    <section id="bairros" class="bairros-section fade-up">
-      <h2 class="section-title">POLOS DE VALORIZAÇÃO EM SÃO PAULO</h2>
-      <p class="section-sub">Especialista nas regiões com maior infraestrutura, liquidez e qualidade de vida da capital paulista.</p>
-      
-      <div class="bairros-grid">
-        <!-- Vila Carrão -->
-        <div class="bairro-card silver-glass silver-glass-hover">
-          <div class="bairro-header">
-            <span class="bairro-badge">Expansão Metrô</span>
-            <span style="color: var(--gold-accent);">★ 4.9</span>
-          </div>
-          <div class="bairro-name">Vila Carrão</div>
-          <div class="bairro-stat">
-            <span>Valorização:</span>
-            <strong>+14% / ano</strong>
-          </div>
-          <div class="bairro-stat">
-            <span>Mobilidade:</span>
-            <strong>Linha 2-Verde</strong>
-          </div>
-        </div>
-
-        <!-- Anália Franco -->
-        <div class="bairro-card silver-glass silver-glass-hover">
-          <div class="bairro-header">
-            <span class="bairro-badge">Alto Padrão</span>
-            <span style="color: var(--gold-accent);">★ 5.0</span>
-          </div>
-          <div class="bairro-name">Anália Franco</div>
-          <div class="bairro-stat">
-            <span>Valorização:</span>
-            <strong>+16% / ano</strong>
-          </div>
-          <div class="bairro-stat">
-            <span>Perfil:</span>
-            <strong>Luxo & Gastronomia</strong>
-          </div>
-        </div>
-
-        <!-- Tatuapé -->
-        <div class="bairro-card silver-glass silver-glass-hover">
-          <div class="bairro-header">
-            <span class="bairro-badge">Polo Urbano</span>
-            <span style="color: var(--gold-accent);">★ 4.9</span>
-          </div>
-          <div class="bairro-name">Tatuapé</div>
-          <div class="bairro-stat">
-            <span>Valorização:</span>
-            <strong>+15% / ano</strong>
-          </div>
-          <div class="bairro-stat">
-            <span>Mobilidade:</span>
-            <strong>2 Estações Metrô</strong>
-          </div>
-        </div>
-
-        <!-- Mooca -->
-        <div class="bairro-card silver-glass silver-glass-hover">
-          <div class="bairro-header">
-            <span class="bairro-badge">Tradição Nobre</span>
-            <span style="color: var(--gold-accent);">★ 4.8</span>
-          </div>
-          <div class="bairro-name">Mooca</div>
-          <div class="bairro-stat">
-            <span>Valorização:</span>
-            <strong>+12% / ano</strong>
-          </div>
-          <div class="bairro-stat">
-            <span>Perfil:</span>
-            <strong>Tradicional & Nobre</strong>
-          </div>
+        <div class="bairro-stat">
+          <span>Mobilidade:</span>
+          <strong>Linha 2-Verde</strong>
         </div>
       </div>
-    </section>
 
-  </div> <!-- End hero-extended-wrapper -->
+      <!-- Anália Franco -->
+      <div class="bairro-card silver-glass silver-glass-hover">
+        <div class="bairro-header">
+          <span class="bairro-badge">Alto Padrão</span>
+          <span style="color: var(--gold-accent);">★ 5.0</span>
+        </div>
+        <div class="bairro-name">Anália Franco</div>
+        <div class="bairro-stat">
+          <span>Valorização:</span>
+          <strong>+16% / ano</strong>
+        </div>
+        <div class="bairro-stat">
+          <span>Perfil:</span>
+          <strong>Luxo & Gastronomia</strong>
+        </div>
+      </div>
+
+      <!-- Tatuapé -->
+      <div class="bairro-card silver-glass silver-glass-hover">
+        <div class="bairro-header">
+          <span class="bairro-badge">Polo Urbano</span>
+          <span style="color: var(--gold-accent);">★ 4.9</span>
+        </div>
+        <div class="bairro-name">Tatuapé</div>
+        <div class="bairro-stat">
+          <span>Valorização:</span>
+          <strong>+15% / ano</strong>
+        </div>
+        <div class="bairro-stat">
+          <span>Mobilidade:</span>
+          <strong>2 Estações Metrô</strong>
+        </div>
+      </div>
+
+      <!-- Mooca -->
+      <div class="bairro-card silver-glass silver-glass-hover">
+        <div class="bairro-header">
+          <span class="bairro-badge">Tradição Nobre</span>
+          <span style="color: var(--gold-accent);">★ 4.8</span>
+        </div>
+        <div class="bairro-name">Mooca</div>
+        <div class="bairro-stat">
+          <span>Valorização:</span>
+          <strong>+12% / ano</strong>
+        </div>
+        <div class="bairro-stat">
+          <span>Perfil:</span>
+          <strong>Tradicional & Nobre</strong>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- VITRINE DE IMÓVEIS -->
   <section id="vitrine" class="vitrine-section fade-up">
@@ -1227,7 +1323,7 @@
   <section id="corretora" class="broker-section fade-up">
     <div class="broker-container silver-glass">
       
-      <!-- Left: Smooth Frame Canvas of Broker (Living Portrait & Scroll Sync) -->
+      <!-- Left: Smooth Frame Canvas of Broker -->
       <div class="broker-canvas-wrap">
         <canvas id="broker-canvas"></canvas>
         <div class="broker-canvas-gradient"></div>
@@ -1420,7 +1516,7 @@
   </a>
 
   <!-- =========================================================
-       SCRIPTS: LENIS, HERO 1 VIDEO LOOP ENGINE, BROKER ANIMATION
+       SCRIPTS: LENIS, SCROLLEXPAND ENGINE, HERO VIDEO LOOP, BROKER
        ========================================================= -->
   <script>
     // 1. Lenis Smooth Scroll
@@ -1442,7 +1538,152 @@
       requestAnimationFrame(raf);
     }
 
-    // 2. HERO 1: Continuous Seamless Loop Engine extending across Section 1 & Top sections
+    // Math helpers from React Bits ScrollExpand
+    const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+    const smoothstep = (edge0, edge1, x) => {
+      const t = clamp((x - edge0) / (edge1 - edge0 || 1e-6), 0, 1);
+      return t * t * (3 - 2 * t);
+    };
+
+    // 2. SCROLLEXPAND HERO CONTROLLER (Vanilla JS adaptation of React Bits ScrollExpand)
+    (function initScrollExpand() {
+      const root = document.getElementById('hero-scroll-expand');
+      const track = document.getElementById('se-track');
+      const stage = document.getElementById('se-stage');
+      const frame = document.getElementById('se-frame');
+      const media = document.getElementById('hero1-canvas');
+      const title = document.getElementById('se-title');
+      const overlay = document.getElementById('se-overlay');
+      const scrim = document.getElementById('se-scrim');
+      const hint = document.getElementById('se-hint');
+
+      if (!root || !track || !stage || !frame || !media) return;
+
+      // ScrollExpand Props Configuration
+      const config = {
+        startWidth: window.innerWidth < 768 ? 84 : 46,
+        startHeight: window.innerWidth < 768 ? 64 : 60,
+        startRadius: 28,
+        endRadius: 0,
+        mediaZoom: 1.35,
+        scrollDistance: 1.2,
+        holdDistance: 0.35,
+        smoothing: 0.08,
+        overlayScrim: 0.55,
+        useWindowScroll: true,
+        enabled: true
+      };
+
+      let current = 0;
+      let target = 0;
+      let stageH = window.innerHeight;
+      let rafId = 0;
+      let isRunning = false;
+
+      function applyProgress(p) {
+        const e = smoothstep(0, 1, p);
+
+        // Calculate frame width, height, insets and corner radius
+        const w = config.startWidth + (100 - config.startWidth) * e;
+        const h = config.startHeight + (100 - config.startHeight) * e;
+        const ix = Math.max(0, (100 - w) / 2);
+        const iy = Math.max(0, (100 - h) / 2);
+        const r = config.startRadius + (config.endRadius - config.startRadius) * e;
+
+        frame.style.clipPath = `inset(${iy}% ${ix}% ${iy}% ${ix}% round ${r}px)`;
+
+        // Media scale zoom ease-back
+        media.style.transform = `scale(${config.mediaZoom + (1 - config.mediaZoom) * e})`;
+
+        // Scrim opacity
+        if (scrim) {
+          scrim.style.opacity = `${config.overlayScrim * e}`;
+        }
+
+        // Resting title lifts away and fades out
+        if (title) {
+          const out = smoothstep(0.35, 0.85, p);
+          title.style.opacity = `${1 - out}`;
+          title.style.transform = `translate3d(0, ${-32 * out}px, 0) scale(${1 + 0.06 * out})`;
+        }
+
+        // Hint fades out immediately
+        if (hint) {
+          const gone = smoothstep(0, 0.15, p);
+          hint.style.opacity = `${1 - gone}`;
+          hint.style.transform = `translate3d(0, ${10 * gone}px, 0)`;
+        }
+
+        // Overlay content fades in at full bleed
+        if (overlay) {
+          const inn = smoothstep(0.68, 1, p);
+          overlay.style.opacity = `${inn}`;
+          overlay.style.transform = `translate3d(0, ${20 * (1 - inn)}px, 0)`;
+          overlay.style.pointerEvents = inn > 0.7 ? 'auto' : 'none';
+        }
+      }
+
+      function measure() {
+        stageH = window.innerHeight;
+        stage.style.height = `${stageH}px`;
+        track.style.height = `${stageH * (1 + Math.max(0, config.scrollDistance) + Math.max(0, config.holdDistance))}px`;
+
+        config.startWidth = window.innerWidth < 768 ? 84 : 46;
+        config.startHeight = window.innerWidth < 768 ? 64 : 60;
+      }
+
+      function readProgress() {
+        if (!config.enabled) return 1;
+        const span = stageH * Math.max(0.01, config.scrollDistance);
+        const top = track.getBoundingClientRect().top;
+        return clamp(-top / span, 0, 1);
+      }
+
+      function tick() {
+        const k = config.smoothing <= 0 ? 1 : 1 - Math.exp(-1 / (60 * config.smoothing));
+        current += (target - current) * k;
+        if (Math.abs(target - current) < 0.0004) {
+          current = target;
+          isRunning = false;
+        }
+        applyProgress(current);
+        if (isRunning) {
+          rafId = requestAnimationFrame(tick);
+        }
+      }
+
+      function kick() {
+        if (isRunning) return;
+        isRunning = true;
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function onScroll() {
+        target = readProgress();
+        kick();
+      }
+
+      function onResize() {
+        measure();
+        target = readProgress();
+        current = target;
+        applyProgress(current);
+      }
+
+      measure();
+      target = readProgress();
+      current = target;
+      applyProgress(current);
+
+      if (lenis) {
+        lenis.on('scroll', onScroll);
+      } else {
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+      window.addEventListener('resize', onResize);
+    })();
+
+    // 3. HERO 1: Drone Ascent & Cars Video Loop Canvas Engine (Inside ScrollExpand Frame)
     (function initHero1Loop() {
       const canvas = document.getElementById('hero1-canvas');
       const ctx = canvas.getContext('2d', { alpha: false });
@@ -1451,7 +1692,7 @@
       const images = new Array(TOTAL_FRAMES);
       let currentFrameFloat = 0;
       let lastTime = performance.now();
-      const FPS = 28; // Butter smooth frame rate
+      const FPS = 28;
       const frameInterval = 1000 / FPS;
 
       function getFrameUrl(idx) {
@@ -1461,8 +1702,8 @@
 
       function resize() {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const w = canvas.parentElement.offsetWidth;
-        const h = canvas.parentElement.offsetHeight;
+        const w = canvas.parentElement.offsetWidth || window.innerWidth;
+        const h = canvas.parentElement.offsetHeight || window.innerHeight;
         canvas.width = w * dpr;
         canvas.height = h * dpr;
         ctx.imageSmoothingEnabled = true;
@@ -1479,7 +1720,6 @@
         const nw = img.naturalWidth;
         const nh = img.naturalHeight;
 
-        // Object-fit: cover calculation
         const scale = Math.max(cw / nw, ch / nh);
         const dw = nw * scale;
         const dh = nh * scale;
@@ -1500,7 +1740,6 @@
         requestAnimationFrame(loop);
       }
 
-      // Preload Hero 1 Frames progressively
       function preload() {
         for (let i = 0; i < TOTAL_FRAMES; i++) {
           const img = new Image();
@@ -1518,7 +1757,7 @@
       requestAnimationFrame(loop);
     })();
 
-    // 3. HERO 2 / BROKER SHOWCASE: Living Portrait & Interactive Scrubbing
+    // 4. HERO 2 / BROKER SHOWCASE: Living Portrait & Interactive Scrubbing
     (function initBrokerAnimation() {
       const brokerSection = document.getElementById('corretora');
       const canvas = document.getElementById('broker-canvas');
@@ -1570,12 +1809,10 @@
       function update() {
         if (isVisible) {
           if (isUserScrolling) {
-            // Smoothly lerp towards scroll target
             const delta = targetFrame - currentFrame;
             currentFrame += delta * 0.12;
             autoPlayFloat = currentFrame;
           } else {
-            // Subtle slow living motion when idle
             autoPlayFloat = (autoPlayFloat + 0.35) % TOTAL_FRAMES;
             currentFrame = autoPlayFloat;
           }
@@ -1626,7 +1863,7 @@
       requestAnimationFrame(update);
     })();
 
-    // 4. Interactive Calculator Logic
+    // 5. Interactive Calculator Logic
     const rentSlider = document.getElementById('rentSlider');
     const yearsSlider = document.getElementById('yearsSlider');
     const rentDisplay = document.getElementById('rentDisplay');
@@ -1646,7 +1883,7 @@
       let currentRent = rent;
       for (let y = 0; y < years; y++) {
         totalLost += currentRent * 12;
-        currentRent *= 1.04; // 4% inflação anual
+        currentRent *= 1.04;
       }
 
       const baseProperty = rent * 220;
@@ -1662,7 +1899,7 @@
       updateCalc();
     }
 
-    // 5. FAQ Accordion Logic
+    // 6. FAQ Accordion Logic
     const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach(item => {
       const question = item.querySelector('.faq-question');
@@ -1675,7 +1912,7 @@
       });
     });
 
-    // 6. Staggered Fade-Up Observer
+    // 7. Staggered Fade-Up Observer
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
