@@ -83,7 +83,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 18px 24px;
-      background: rgba(7, 8, 10, 0.75);
+      background: rgba(7, 8, 10, 0.8);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -153,144 +153,72 @@
     }
 
     /* =========================================================
-       REACT BITS: SCROLLEXPAND COMPONENT CSS
+       HERO 1: CONTINUOUS SEAMLESS LOOP & IMMERSIVE PRESENTATION
        ========================================================= */
-    .scroll-expand {
+    .hero-extended-wrapper {
       position: relative;
       width: 100%;
       background-color: var(--bg-main);
+      overflow: hidden;
     }
 
-    .scroll-expand__track {
-      position: relative;
-      width: 100%;
-    }
-
-    .scroll-expand__stage {
-      position: sticky;
+    /* Background Canvas that seamlessly loops under Hero 1 and top sections */
+    .hero-bg-canvas-container {
+      position: absolute;
       top: 0;
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-      --se-title-size: clamp(2rem, 5vw, 4.5rem);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--bg-main);
-    }
-
-    .scroll-expand__frame {
-      position: absolute;
-      inset: 0;
-      clip-path: inset(21% 29% 21% 29% round 24px);
-      will-change: clip-path;
-      overflow: hidden;
-      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
-    }
-
-    .scroll-expand__media {
-      position: absolute;
-      inset: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      will-change: transform;
-      transform-origin: center;
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-
-    .scroll-expand__scrim {
-      position: absolute;
-      inset: 0;
+      max-height: 1800px;
+      z-index: 1;
       pointer-events: none;
-      background: linear-gradient(to top, rgba(7, 8, 10, 0.95) 0%, rgba(7, 8, 10, 0.3) 50%, rgba(7, 8, 10, 0.6) 100%);
-      opacity: 0;
-      will-change: opacity;
+      overflow: hidden;
     }
 
-    .scroll-expand__overlay {
+    #hero1-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      opacity: 0.58;
+    }
+
+    /* Gradient overlay that fades smoothly into solid #07080A */
+    .hero-bg-gradient {
       position: absolute;
       inset: 0;
+      z-index: 2;
+      background: linear-gradient(
+        180deg, 
+        rgba(7, 8, 10, 0.4) 0%, 
+        rgba(7, 8, 10, 0.55) 45%, 
+        rgba(7, 8, 10, 0.85) 75%, 
+        #07080A 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Main Hero 1 Banner */
+    .hero-main-section {
+      position: relative;
+      z-index: 5;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 100px 24px 60px 24px;
-      opacity: 0;
-      will-change: opacity, transform;
-      z-index: 10;
-      max-width: 960px;
+      padding: 120px 20px 60px 20px;
+      max-width: 1240px;
       margin: 0 auto;
     }
-
-    .scroll-expand__title {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-      padding: 0 6%;
-      text-align: center;
-      font-family: var(--font-sans);
-      font-size: var(--se-title-size);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      color: #fff;
-      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
-      pointer-events: none;
-      will-change: opacity, transform;
-      z-index: 5;
-    }
-    .scroll-expand__title span {
-      color: var(--gold-accent);
-    }
-    .scroll-expand__title-tag {
-      font-family: var(--font-mono);
-      font-size: clamp(11px, 1.2vw, 13px);
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--gold-accent);
-      margin-bottom: 12px;
-      font-weight: 600;
+    @media (min-width: 768px) {
+      .hero-main-section {
+        padding: 140px 48px 80px 48px;
+      }
     }
 
-    .scroll-expand__hint {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 2rem;
-      text-align: center;
-      font-family: var(--font-mono);
-      font-size: 0.8125rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.7);
-      pointer-events: none;
-      will-change: opacity, transform;
-      z-index: 6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .scroll-expand__hint-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--gold-accent);
-      border-radius: 50%;
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 0.3; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.2); }
+    .hero-content {
+      max-width: 880px;
     }
 
-    /* Hero Content Elements Inside ScrollExpand Overlay */
     .hero-tag {
       color: var(--gold-accent);
       font-family: var(--font-mono);
@@ -311,12 +239,11 @@
     .hero-h1 {
       color: #ffffff;
       font-family: var(--font-sans);
-      font-size: clamp(34px, 5.5vw, 68px);
-      line-height: 1.05;
+      font-size: clamp(38px, 6.5vw, 76px);
+      line-height: 1.04;
       letter-spacing: -0.03em;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       font-weight: 800;
-      max-width: 840px;
     }
     .hero-h1 span {
       background: linear-gradient(135deg, #ffffff 30%, var(--gold-accent) 100%);
@@ -325,38 +252,34 @@
     }
 
     .hero-desc {
-      font-size: clamp(15px, 1.6vw, 18px);
+      font-size: clamp(16px, 1.8vw, 20px);
       color: rgba(255, 255, 255, 0.8);
       line-height: 1.55;
-      margin-bottom: 32px;
-      max-width: 620px;
+      margin-bottom: 36px;
+      max-width: 640px;
     }
 
     .hero-buttons {
       display: flex;
       flex-direction: column;
       gap: 16px;
-      width: 100%;
-      max-width: 480px;
-      justify-content: center;
     }
     @media (min-width: 640px) {
       .hero-buttons {
         flex-direction: row;
-        max-width: none;
-        width: auto;
+        align-items: center;
       }
     }
 
     .btn-hero-primary {
-      height: 52px;
+      height: 54px;
       width: 100%;
       padding: 0 32px;
       background: #ffffff;
       color: #07080a;
       border-radius: 9999px;
       font-weight: 600;
-      font-size: 14.5px;
+      font-size: 15px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -374,15 +297,15 @@
     }
 
     .btn-hero-secondary {
-      height: 52px;
+      height: 54px;
       width: 100%;
       padding: 0 32px;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: #ffffff;
       border-radius: 9999px;
       font-weight: 500;
-      font-size: 14.5px;
+      font-size: 15px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -410,10 +333,10 @@
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 60px 20px 40px 20px;
+      padding: 20px 20px 50px 20px;
     }
     @media (min-width: 768px) {
-      .partners-section { padding: 80px 48px 40px 48px; }
+      .partners-section { padding: 30px 48px 60px 48px; }
     }
     .partners-title {
       font-family: var(--font-mono);
@@ -656,78 +579,143 @@
     }
 
     /* =========================================================
-       HERO 2: SEÇÃO DA CORRETORA (LIVING PORTRAIT ANIMATION)
+       SECTION 2: CORRETORA ROSEBEL LOPES WITH <SCROLLEXPAND />
        ========================================================= */
-    .broker-section {
-      width: 100%;
-      max-width: 1200px;
-      margin: 40px auto 70px auto;
-      padding: 0 20px;
-    }
-    @media (min-width: 768px) {
-      .broker-section { padding: 0 48px; }
-    }
-
-    .broker-container {
-      width: 100%;
-      border-radius: 32px;
-      position: relative;
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: 1fr;
-      align-items: stretch;
-      min-height: 580px;
-    }
-    @media (min-width: 960px) {
-      .broker-container {
-        grid-template-columns: 1.15fr 0.85fr;
-      }
-    }
-
-    .broker-canvas-wrap {
+    .broker-expand-wrapper {
       position: relative;
       width: 100%;
-      min-height: 380px;
-      overflow: hidden;
-      background: #000000;
-    }
-    @media (min-width: 960px) {
-      .broker-canvas-wrap { min-height: 580px; }
+      background-color: var(--bg-main);
+      margin: 40px 0 20px 0;
     }
 
-    #broker-canvas {
+    .broker-expand__track {
+      position: relative;
       width: 100%;
-      height: 100%;
-      display: block;
     }
 
-    .broker-canvas-gradient {
+    .broker-expand__stage {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-main);
+      --be-title-size: clamp(2rem, 4.5vw, 4rem);
+    }
+
+    .broker-expand__frame {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to right, transparent 65%, rgba(7, 8, 10, 0.9) 100%),
-                  linear-gradient(to top, rgba(7, 8, 10, 0.8) 0%, transparent 40%);
-      pointer-events: none;
-    }
-    @media (max-width: 959px) {
-      .broker-canvas-gradient {
-        background: linear-gradient(to top, rgba(7, 8, 10, 0.95) 20%, transparent 80%);
-      }
+      clip-path: inset(20% 30% 20% 30% round 28px);
+      will-change: clip-path;
+      overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #000000;
     }
 
-    .broker-info {
-      padding: 36px 24px;
+    .broker-expand__media {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      will-change: transform;
+      transform-origin: center top;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .broker-expand__scrim {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(7, 8, 10, 0.96) 0%, rgba(7, 8, 10, 0.5) 45%, rgba(7, 8, 10, 0.3) 100%),
+                  linear-gradient(to right, rgba(7, 8, 10, 0.85) 0%, rgba(7, 8, 10, 0.3) 60%, rgba(7, 8, 10, 0.85) 100%);
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    /* Resting Title over the initial compact portrait */
+    .broker-expand__title {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
-      position: relative;
+      margin: 0;
+      padding: 0 6%;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: var(--be-title-size);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: #fff;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+      will-change: opacity, transform;
       z-index: 5;
-      background: rgba(7, 8, 10, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-left: 1px solid rgba(255, 255, 255, 0.08);
     }
-    @media (min-width: 768px) {
-      .broker-info { padding: 48px 40px; }
+    .broker-expand__title span {
+      color: var(--gold-accent);
+    }
+    .broker-expand__title-tag {
+      font-family: var(--font-mono);
+      font-size: clamp(11px, 1.2vw, 13px);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold-accent);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .broker-expand__hint {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 2rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+      will-change: opacity, transform;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .broker-expand__hint-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--gold-accent);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* Content that expands in full bleed over her portrait */
+    .broker-expand__overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 40px 24px;
+      opacity: 0;
+      will-change: opacity, transform;
+      z-index: 10;
+      max-width: 920px;
+      margin: 0 auto;
     }
 
     .broker-badge {
@@ -744,17 +732,17 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       width: fit-content;
     }
 
     .broker-title {
       font-family: var(--font-sans);
-      font-size: clamp(28px, 3.5vw, 44px);
+      font-size: clamp(30px, 4.5vw, 54px);
       font-weight: 800;
-      line-height: 1.15;
+      line-height: 1.1;
       color: #ffffff;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       letter-spacing: -0.02em;
     }
     .broker-title span {
@@ -764,24 +752,33 @@
     }
 
     .broker-desc {
-      font-size: 15px;
-      line-height: 1.65;
-      color: rgba(255, 255, 255, 0.75);
+      font-size: clamp(15px, 1.5vw, 17px);
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
       margin-bottom: 28px;
+      max-width: 680px;
     }
 
     .broker-stats-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
       padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      max-width: 680px;
+    }
+    @media (min-width: 640px) {
+      .broker-stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
 
     .broker-stat-item {
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
     .broker-stat-num {
       font-family: var(--font-mono);
@@ -790,8 +787,9 @@
       color: #ffffff;
     }
     .broker-stat-lbl {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.5);
+      font-size: 11.5px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 2px;
     }
 
     /* =========================================================
@@ -1106,149 +1104,130 @@
   </header>
 
   <!-- =========================================================
-       HERO: INTEGRATED <SCROLLEXPAND /> COMPONENT FROM REACT BITS
+       HERO 1: IMMERSIVE FULL-BLEED VIDEO LOOP
        ========================================================= -->
-  <div class="scroll-expand" id="hero-scroll-expand">
-    <div class="scroll-expand__track" id="se-track">
-      <div class="scroll-expand__stage" id="se-stage">
-        
-        <!-- Expanding frame with clipPath, rounded corners and dynamic scale -->
-        <div class="scroll-expand__frame" id="se-frame">
-          
-          <!-- Media: Smooth 175-frame Drone Ascent & Cars Moving Loop -->
-          <canvas id="hero1-canvas" class="scroll-expand__media"></canvas>
-          
-          <!-- Gradient Scrim overlay that eases in -->
-          <div class="scroll-expand__scrim" id="se-scrim"></div>
-          
-          <!-- Overlay Content: Reveals when frame reaches full bleed -->
-          <div class="scroll-expand__overlay" id="se-overlay">
-            <div class="hero-tag">
-              <span>✦</span>
-              <span>Consultoria Imobiliária de Alto Padrão • CRECI 205572</span>
-            </div>
-            <h1 class="hero-h1">
-              O imóvel ideal para<br>
-              <span>o seu momento.</span>
-            </h1>
-            <p class="hero-desc">
-              Curadoria exclusiva dos melhores lançamentos e coberturas de altíssimo padrão nas regiões mais nobres de São Paulo.
-            </p>
-            <div class="hero-buttons">
-              <a href="https://wa.me/5511981408548?text=Olá,%20Rosebel!%20Gostaria%20de%20falar%20no%20WhatsApp." target="_blank" class="btn-hero-primary">
-                <span>Falar no WhatsApp</span>
-                <span>↗</span>
-              </a>
-              <a href="#vitrine" class="btn-hero-secondary">
-                <span>📥 Ver Vitrine & Tabela de Preços</span>
-              </a>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Resting Headline Title that lifts away as media opens up -->
-        <div class="scroll-expand__title" id="se-title">
-          <div class="scroll-expand__title-tag">Exclusividade & Alto Padrão</div>
-          <div>Rosebel Lopes<span>.</span></div>
-        </div>
-
-        <!-- Cue Hint under the resting frame -->
-        <div class="scroll-expand__hint" id="se-hint">
-          <div class="scroll-expand__hint-dot"></div>
-          <span>Role para expandir</span>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- CONSTRUTORAS PARCEIRAS -->
-  <section id="parceiros" class="partners-section fade-up">
-    <div class="partners-title">Construtoras & Incorporadoras Parceiras</div>
-    <div class="partners-grid">
-      <div class="partner-item silver-glass silver-glass-hover">CYRELA<span>.</span></div>
-      <div class="partner-item silver-glass silver-glass-hover">DIÁLOGO<span>.</span></div>
-      <div class="partner-item silver-glass silver-glass-hover">MITRE<span>.</span></div>
-      <div class="partner-item silver-glass silver-glass-hover">LAVVI<span>.</span></div>
-    </div>
-  </section>
-
-  <!-- BAIRROS ATENDIDOS -->
-  <section id="bairros" class="bairros-section fade-up">
-    <h2 class="section-title">POLOS DE VALORIZAÇÃO EM SÃO PAULO</h2>
-    <p class="section-sub">Especialista nas regiões com maior infraestrutura, liquidez e qualidade de vida da capital paulista.</p>
+  <div class="hero-extended-wrapper" id="inicio">
     
-    <div class="bairros-grid">
-      <!-- Vila Carrão -->
-      <div class="bairro-card silver-glass silver-glass-hover">
-        <div class="bairro-header">
-          <span class="bairro-badge">Expansão Metrô</span>
-          <span style="color: var(--gold-accent);">★ 4.9</span>
-        </div>
-        <div class="bairro-name">Vila Carrão</div>
-        <div class="bairro-stat">
-          <span>Valorização:</span>
-          <strong>+14% / ano</strong>
-        </div>
-        <div class="bairro-stat">
-          <span>Mobilidade:</span>
-          <strong>Linha 2-Verde</strong>
-        </div>
-      </div>
-
-      <!-- Anália Franco -->
-      <div class="bairro-card silver-glass silver-glass-hover">
-        <div class="bairro-header">
-          <span class="bairro-badge">Alto Padrão</span>
-          <span style="color: var(--gold-accent);">★ 5.0</span>
-        </div>
-        <div class="bairro-name">Anália Franco</div>
-        <div class="bairro-stat">
-          <span>Valorização:</span>
-          <strong>+16% / ano</strong>
-        </div>
-        <div class="bairro-stat">
-          <span>Perfil:</span>
-          <strong>Luxo & Gastronomia</strong>
-        </div>
-      </div>
-
-      <!-- Tatuapé -->
-      <div class="bairro-card silver-glass silver-glass-hover">
-        <div class="bairro-header">
-          <span class="bairro-badge">Polo Urbano</span>
-          <span style="color: var(--gold-accent);">★ 4.9</span>
-        </div>
-        <div class="bairro-name">Tatuapé</div>
-        <div class="bairro-stat">
-          <span>Valorização:</span>
-          <strong>+15% / ano</strong>
-        </div>
-        <div class="bairro-stat">
-          <span>Mobilidade:</span>
-          <strong>2 Estações Metrô</strong>
-        </div>
-      </div>
-
-      <!-- Mooca -->
-      <div class="bairro-card silver-glass silver-glass-hover">
-        <div class="bairro-header">
-          <span class="bairro-badge">Tradição Nobre</span>
-          <span style="color: var(--gold-accent);">★ 4.8</span>
-        </div>
-        <div class="bairro-name">Mooca</div>
-        <div class="bairro-stat">
-          <span>Valorização:</span>
-          <strong>+12% / ano</strong>
-        </div>
-        <div class="bairro-stat">
-          <span>Perfil:</span>
-          <strong>Tradicional & Nobre</strong>
-        </div>
-      </div>
+    <!-- Background Loop Canvas -->
+    <div class="hero-bg-canvas-container">
+      <canvas id="hero1-canvas"></canvas>
+      <div class="hero-bg-gradient"></div>
     </div>
-  </section>
+
+    <!-- Hero Main Section -->
+    <section class="hero-main-section">
+      <div class="hero-content fade-up in-view">
+        <div class="hero-tag">
+          <span>✦</span>
+          <span>Consultoria Imobiliária de Alto Padrão • CRECI 205572</span>
+        </div>
+        <h1 class="hero-h1">
+          O imóvel ideal para<br>
+          <span>o seu momento.</span>
+        </h1>
+        <p class="hero-desc">
+          Curadoria exclusiva dos melhores lançamentos e coberturas nas regiões mais nobres de São Paulo.
+        </p>
+        <div class="hero-buttons">
+          <a href="https://wa.me/5511981408548?text=Olá,%20Rosebel!%20Gostaria%20de%20falar%20no%20WhatsApp." target="_blank" class="btn-hero-primary">
+            <span>Falar no WhatsApp</span>
+            <span>↗</span>
+          </a>
+          <a href="#vitrine" class="btn-hero-secondary">
+            <span>📥 Ver Vitrine & Tabela de Preços</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONSTRUTORAS PARCEIRAS -->
+    <section id="parceiros" class="partners-section fade-up">
+      <div class="partners-title">Construtoras & Incorporadoras Parceiras</div>
+      <div class="partners-grid">
+        <div class="partner-item silver-glass silver-glass-hover">CYRELA<span>.</span></div>
+        <div class="partner-item silver-glass silver-glass-hover">DIÁLOGO<span>.</span></div>
+        <div class="partner-item silver-glass silver-glass-hover">MITRE<span>.</span></div>
+        <div class="partner-item silver-glass silver-glass-hover">LAVVI<span>.</span></div>
+      </div>
+    </section>
+
+    <!-- BAIRROS ATENDIDOS -->
+    <section id="bairros" class="bairros-section fade-up">
+      <h2 class="section-title">POLOS DE VALORIZAÇÃO EM SÃO PAULO</h2>
+      <p class="section-sub">Especialista nas regiões com maior infraestrutura, liquidez e qualidade de vida da capital paulista.</p>
+      
+      <div class="bairros-grid">
+        <!-- Vila Carrão -->
+        <div class="bairro-card silver-glass silver-glass-hover">
+          <div class="bairro-header">
+            <span class="bairro-badge">Expansão Metrô</span>
+            <span style="color: var(--gold-accent);">★ 4.9</span>
+          </div>
+          <div class="bairro-name">Vila Carrão</div>
+          <div class="bairro-stat">
+            <span>Valorização:</span>
+            <strong>+14% / ano</strong>
+          </div>
+          <div class="bairro-stat">
+            <span>Mobilidade:</span>
+            <strong>Linha 2-Verde</strong>
+          </div>
+        </div>
+
+        <!-- Anália Franco -->
+        <div class="bairro-card silver-glass silver-glass-hover">
+          <div class="bairro-header">
+            <span class="bairro-badge">Alto Padrão</span>
+            <span style="color: var(--gold-accent);">★ 5.0</span>
+          </div>
+          <div class="bairro-name">Anália Franco</div>
+          <div class="bairro-stat">
+            <span>Valorização:</span>
+            <strong>+16% / ano</strong>
+          </div>
+          <div class="bairro-stat">
+            <span>Perfil:</span>
+            <strong>Luxo & Gastronomia</strong>
+          </div>
+        </div>
+
+        <!-- Tatuapé -->
+        <div class="bairro-card silver-glass silver-glass-hover">
+          <div class="bairro-header">
+            <span class="bairro-badge">Polo Urbano</span>
+            <span style="color: var(--gold-accent);">★ 4.9</span>
+          </div>
+          <div class="bairro-name">Tatuapé</div>
+          <div class="bairro-stat">
+            <span>Valorização:</span>
+            <strong>+15% / ano</strong>
+          </div>
+          <div class="bairro-stat">
+            <span>Mobilidade:</span>
+            <strong>2 Estações Metrô</strong>
+          </div>
+        </div>
+
+        <!-- Mooca -->
+        <div class="bairro-card silver-glass silver-glass-hover">
+          <div class="bairro-header">
+            <span class="bairro-badge">Tradição Nobre</span>
+            <span style="color: var(--gold-accent);">★ 4.8</span>
+          </div>
+          <div class="bairro-name">Mooca</div>
+          <div class="bairro-stat">
+            <span>Valorização:</span>
+            <strong>+12% / ano</strong>
+          </div>
+          <div class="bairro-stat">
+            <span>Perfil:</span>
+            <strong>Tradicional & Nobre</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div> <!-- End hero-extended-wrapper -->
 
   <!-- VITRINE DE IMÓVEIS -->
   <section id="vitrine" class="vitrine-section fade-up">
@@ -1318,58 +1297,79 @@
   </section>
 
   <!-- =========================================================
-       SECTION 2: SEÇÃO DA CORRETORA (LIVING PORTRAIT ANIMATION)
+       SECTION 2: SEÇÃO DA CORRETORA COM <SCROLLEXPAND /> NO ROSTO
        ========================================================= -->
-  <section id="corretora" class="broker-section fade-up">
-    <div class="broker-container silver-glass">
-      
-      <!-- Left: Smooth Frame Canvas of Broker -->
-      <div class="broker-canvas-wrap">
-        <canvas id="broker-canvas"></canvas>
-        <div class="broker-canvas-gradient"></div>
-      </div>
+  <div class="broker-expand-wrapper" id="corretora">
+    <div class="broker-expand__track" id="broker-track">
+      <div class="broker-expand__stage" id="broker-stage">
+        
+        <!-- Expanding Frame on Broker's Face/Portrait -->
+        <div class="broker-expand__frame" id="broker-frame">
+          
+          <!-- Media: 240-frame living portrait of Rosebel Lopes -->
+          <canvas id="broker-canvas" class="broker-expand__media"></canvas>
+          
+          <!-- Luxury Scrim Overlay -->
+          <div class="broker-expand__scrim" id="broker-scrim"></div>
 
-      <!-- Right: Broker Credentials & Story -->
-      <div class="broker-info">
-        <div class="broker-badge">
-          <span>✦</span>
-          <span>Especialista Credenciada • CRECI 205572</span>
+          <!-- Overlay Content: Reveals as frame expands to full bleed -->
+          <div class="broker-expand__overlay" id="broker-overlay">
+            <div class="broker-badge">
+              <span>✦</span>
+              <span>Especialista Credenciada • CRECI 205572</span>
+            </div>
+            
+            <h2 class="broker-title">
+              Rosebel Lopes<br>
+              <span>Consultoria sob medida.</span>
+            </h2>
+            
+            <p class="broker-desc">
+              Mais do que apresentar imóveis, conduzo uma curadoria estratégica para famílias e investidores que exigem exclusividade, segurança jurídica e rentabilidade patrimonial garantida em São Paulo.
+            </p>
+
+            <div class="broker-stats-grid">
+              <div class="broker-stat-item">
+                <span class="broker-stat-num">+10 Anos</span>
+                <span class="broker-stat-lbl">Experiência no mercado</span>
+              </div>
+              <div class="broker-stat-item">
+                <span class="broker-stat-num">R$ 150M+</span>
+                <span class="broker-stat-lbl">Em VGV negociados</span>
+              </div>
+              <div class="broker-stat-item">
+                <span class="broker-stat-num">100%</span>
+                <span class="broker-stat-lbl">Assessoria personalizada</span>
+              </div>
+              <div class="broker-stat-item">
+                <span class="broker-stat-num">Taxa Zero</span>
+                <span class="broker-stat-lbl">Acesso a tabelas diretas</span>
+              </div>
+            </div>
+
+            <a href="https://wa.me/5511981408548?text=Olá,%20Rosebel!%20Gostaria%20de%20conversar%20sobre%20uma%20consultoria%20exclusiva." target="_blank" class="btn-hero-primary" style="justify-content: center; width: auto; min-width: 260px;">
+              <span>Agendar Consultoria VIP</span>
+              <span>↗</span>
+            </a>
+          </div>
+
         </div>
-        <h2 class="broker-title">
-          Rosebel Lopes<br>
-          <span>Consultoria sob medida.</span>
-        </h2>
-        <p class="broker-desc">
-          Mais do que apresentar imóveis, conduzo uma curadoria estratégica para famílias e investidores que exigem exclusividade, segurança jurídica e rentabilidade patrimonial garantida em São Paulo.
-        </p>
 
-        <div class="broker-stats-grid">
-          <div class="broker-stat-item">
-            <span class="broker-stat-num">+10 Anos</span>
-            <span class="broker-stat-lbl">Experiência no mercado</span>
-          </div>
-          <div class="broker-stat-item">
-            <span class="broker-stat-num">R$ 150M+</span>
-            <span class="broker-stat-lbl">Em VGV negociados</span>
-          </div>
-          <div class="broker-stat-item">
-            <span class="broker-stat-num">100%</span>
-            <span class="broker-stat-lbl">Assessoria personalizada</span>
-          </div>
-          <div class="broker-stat-item">
-            <span class="broker-stat-num">Taxa Zero</span>
-            <span class="broker-stat-lbl">Acesso a tabelas diretas</span>
-          </div>
+        <!-- Resting Headline Title over the compact portrait -->
+        <div class="broker-expand__title" id="broker-title">
+          <div class="broker-expand__title-tag">✦ Especialista Credenciada • CRECI 205572</div>
+          <div>Rosebel Lopes<span>.</span></div>
         </div>
 
-        <a href="https://wa.me/5511981408548?text=Olá,%20Rosebel!%20Gostaria%20de%20conversar%20sobre%20uma%20consultoria%20exclusiva." target="_blank" class="btn-hero-primary" style="justify-content: center; width: 100%;">
-          <span>Agendar Consultoria VIP</span>
-          <span>↗</span>
-        </a>
-      </div>
+        <!-- Cue Hint under the resting portrait frame -->
+        <div class="broker-expand__hint" id="broker-hint">
+          <div class="broker-expand__hint-dot"></div>
+          <span>Role para conhecer a corretora</span>
+        </div>
 
+      </div>
     </div>
-  </section>
+  </div>
 
   <!-- SECTION 3: SIMULADOR (Calculator) -->
   <section id="simulador" class="calculator-section fade-up">
@@ -1516,7 +1516,7 @@
   </a>
 
   <!-- =========================================================
-       SCRIPTS: LENIS, SCROLLEXPAND ENGINE, HERO VIDEO LOOP, BROKER
+       SCRIPTS: LENIS, HERO VIDEO LOOP, BROKER SCROLLEXPAND ENGINE
        ========================================================= -->
   <script>
     // 1. Lenis Smooth Scroll
@@ -1545,145 +1545,7 @@
       return t * t * (3 - 2 * t);
     };
 
-    // 2. SCROLLEXPAND HERO CONTROLLER (Vanilla JS adaptation of React Bits ScrollExpand)
-    (function initScrollExpand() {
-      const root = document.getElementById('hero-scroll-expand');
-      const track = document.getElementById('se-track');
-      const stage = document.getElementById('se-stage');
-      const frame = document.getElementById('se-frame');
-      const media = document.getElementById('hero1-canvas');
-      const title = document.getElementById('se-title');
-      const overlay = document.getElementById('se-overlay');
-      const scrim = document.getElementById('se-scrim');
-      const hint = document.getElementById('se-hint');
-
-      if (!root || !track || !stage || !frame || !media) return;
-
-      // ScrollExpand Props Configuration - Fast & Snappy
-      const config = {
-        startWidth: window.innerWidth < 768 ? 84 : 48,
-        startHeight: window.innerWidth < 768 ? 64 : 62,
-        startRadius: 28,
-        endRadius: 0,
-        mediaZoom: 1.25,
-        scrollDistance: 0.55, // Snappy expansion (half viewport scroll)
-        holdDistance: 0.05,   // No dead black space
-        smoothing: 0.05,     // Fast responsive follow time
-        overlayScrim: 0.55,
-        useWindowScroll: true,
-        enabled: true
-      };
-
-      let current = 0;
-      let target = 0;
-      let stageH = window.innerHeight;
-      let rafId = 0;
-      let isRunning = false;
-
-      function applyProgress(p) {
-        const e = smoothstep(0, 0.85, p);
-
-        // Calculate frame width, height, insets and corner radius
-        const w = config.startWidth + (100 - config.startWidth) * e;
-        const h = config.startHeight + (100 - config.startHeight) * e;
-        const ix = Math.max(0, (100 - w) / 2);
-        const iy = Math.max(0, (100 - h) / 2);
-        const r = config.startRadius + (config.endRadius - config.startRadius) * e;
-
-        frame.style.clipPath = `inset(${iy}% ${ix}% ${iy}% ${ix}% round ${r}px)`;
-
-        // Media scale zoom ease-back
-        media.style.transform = `scale(${config.mediaZoom + (1 - config.mediaZoom) * e})`;
-
-        // Scrim opacity
-        if (scrim) {
-          scrim.style.opacity = `${config.overlayScrim * e}`;
-        }
-
-        // Resting title lifts away and fades out quickly
-        if (title) {
-          const out = smoothstep(0.1, 0.45, p);
-          title.style.opacity = `${1 - out}`;
-          title.style.transform = `translate3d(0, ${-28 * out}px, 0) scale(${1 + 0.05 * out})`;
-        }
-
-        // Hint fades out immediately
-        if (hint) {
-          const gone = smoothstep(0, 0.1, p);
-          hint.style.opacity = `${1 - gone}`;
-          hint.style.transform = `translate3d(0, ${10 * gone}px, 0)`;
-        }
-
-        // Overlay content fades in smoothly as frame opens
-        if (overlay) {
-          const inn = smoothstep(0.4, 0.8, p);
-          overlay.style.opacity = `${inn}`;
-          overlay.style.transform = `translate3d(0, ${18 * (1 - inn)}px, 0)`;
-          overlay.style.pointerEvents = inn > 0.5 ? 'auto' : 'none';
-        }
-      }
-
-      function measure() {
-        stageH = window.innerHeight;
-        stage.style.height = `${stageH}px`;
-        track.style.height = `${stageH * (1 + Math.max(0, config.scrollDistance) + Math.max(0, config.holdDistance))}px`;
-
-        config.startWidth = window.innerWidth < 768 ? 84 : 46;
-        config.startHeight = window.innerWidth < 768 ? 64 : 60;
-      }
-
-      function readProgress() {
-        if (!config.enabled) return 1;
-        const span = stageH * Math.max(0.01, config.scrollDistance);
-        const top = track.getBoundingClientRect().top;
-        return clamp(-top / span, 0, 1);
-      }
-
-      function tick() {
-        const k = config.smoothing <= 0 ? 1 : 1 - Math.exp(-1 / (60 * config.smoothing));
-        current += (target - current) * k;
-        if (Math.abs(target - current) < 0.0004) {
-          current = target;
-          isRunning = false;
-        }
-        applyProgress(current);
-        if (isRunning) {
-          rafId = requestAnimationFrame(tick);
-        }
-      }
-
-      function kick() {
-        if (isRunning) return;
-        isRunning = true;
-        rafId = requestAnimationFrame(tick);
-      }
-
-      function onScroll() {
-        target = readProgress();
-        kick();
-      }
-
-      function onResize() {
-        measure();
-        target = readProgress();
-        current = target;
-        applyProgress(current);
-      }
-
-      measure();
-      target = readProgress();
-      current = target;
-      applyProgress(current);
-
-      if (lenis) {
-        lenis.on('scroll', onScroll);
-      } else {
-        window.addEventListener('scroll', onScroll, { passive: true });
-      }
-      window.addEventListener('resize', onResize);
-    })();
-
-    // 3. HERO 1: Drone Ascent & Cars Video Loop Canvas Engine (Inside ScrollExpand Frame)
+    // 2. HERO 1: Continuous Seamless Drone & Cars Loop Engine
     (function initHero1Loop() {
       const canvas = document.getElementById('hero1-canvas');
       const ctx = canvas.getContext('2d', { alpha: false });
@@ -1757,43 +1619,51 @@
       requestAnimationFrame(loop);
     })();
 
-    // 4. HERO 2 / BROKER SHOWCASE: Living Portrait & Interactive Scrubbing
-    (function initBrokerAnimation() {
-      const brokerSection = document.getElementById('corretora');
-      const canvas = document.getElementById('broker-canvas');
-      const ctx = canvas.getContext('2d', { alpha: false });
+    // 3. BROKER SECTION: <ScrollExpand /> ON HER FACE/PORTRAIT
+    (function initBrokerScrollExpand() {
+      const root = document.getElementById('corretora');
+      const track = document.getElementById('broker-track');
+      const stage = document.getElementById('broker-stage');
+      const frame = document.getElementById('broker-frame');
+      const media = document.getElementById('broker-canvas');
+      const title = document.getElementById('broker-title');
+      const overlay = document.getElementById('broker-overlay');
+      const scrim = document.getElementById('broker-scrim');
+      const hint = document.getElementById('broker-hint');
+      const ctx = media.getContext('2d', { alpha: false });
 
+      if (!root || !track || !stage || !frame || !media) return;
+
+      // Broker Frame Preloading (240 Frames)
       const TOTAL_FRAMES = 240;
       const images = new Array(TOTAL_FRAMES);
       let targetFrame = 0;
       let currentFrame = 0;
       let isVisible = false;
       let autoPlayFloat = 0;
-      let isUserScrolling = false;
-      let scrollTimeout = null;
 
       function getFrameUrl(idx) {
         const num = String(idx + 1).padStart(3, '0');
         return `images/ezgif-frame-${num}.jpg`;
       }
 
-      function resize() {
+      function resizeMedia() {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const w = canvas.parentElement.offsetWidth;
-        const h = canvas.parentElement.offsetHeight;
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
+        const w = media.parentElement.offsetWidth || window.innerWidth;
+        const h = media.parentElement.offsetHeight || window.innerHeight;
+        media.width = w * dpr;
+        media.height = h * dpr;
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
-        render(Math.round(currentFrame));
+        renderFrame(Math.round(currentFrame));
       }
 
-      function render(frameIdx) {
+      function renderFrame(frameIdx) {
         const img = images[frameIdx];
         if (!img || !img.complete || !img.naturalWidth) return;
 
-        const cw = canvas.width;
-        const ch = canvas.height;
+        const cw = media.width;
+        const ch = media.height;
         const nw = img.naturalWidth;
         const nh = img.naturalHeight;
 
@@ -1801,42 +1671,132 @@
         const dw = nw * scale;
         const dh = nh * scale;
         const dx = (cw - dw) / 2;
-        const dy = (ch - dh) / 2;
+        const dy = (ch - dw) / 2;
 
         ctx.drawImage(img, dx, dy, dw, dh);
       }
 
-      function update() {
-        if (isVisible) {
-          if (isUserScrolling) {
-            const delta = targetFrame - currentFrame;
-            currentFrame += delta * 0.12;
-            autoPlayFloat = currentFrame;
-          } else {
-            autoPlayFloat = (autoPlayFloat + 0.35) % TOTAL_FRAMES;
-            currentFrame = autoPlayFloat;
-          }
-          const idx = Math.max(0, Math.min(TOTAL_FRAMES - 1, Math.round(currentFrame)));
-          render(idx);
+      // ScrollExpand Configuration
+      const config = {
+        startWidth: window.innerWidth < 768 ? 84 : 44,
+        startHeight: window.innerWidth < 768 ? 64 : 62,
+        startRadius: 28,
+        endRadius: 0,
+        mediaZoom: 1.3,
+        scrollDistance: 0.65, // Snappy opening
+        holdDistance: 0.1,    // Smooth release
+        smoothing: 0.06,
+        overlayScrim: 0.65,
+        useWindowScroll: true,
+        enabled: true
+      };
+
+      let currentProgress = 0;
+      let targetProgress = 0;
+      let stageH = window.innerHeight;
+      let rafId = 0;
+      let isRunning = false;
+
+      function applyProgress(p) {
+        const e = smoothstep(0, 0.85, p);
+
+        // Frame Dimensions & Inset Calculations
+        const w = config.startWidth + (100 - config.startWidth) * e;
+        const h = config.startHeight + (100 - config.startHeight) * e;
+        const ix = Math.max(0, (100 - w) / 2);
+        const iy = Math.max(0, (100 - h) / 2);
+        const r = config.startRadius + (config.endRadius - config.startRadius) * e;
+
+        frame.style.clipPath = `inset(${iy}% ${ix}% ${iy}% ${ix}% round ${r}px)`;
+
+        // Zoom portrait media out from close-up on face to full view
+        media.style.transform = `scale(${config.mediaZoom + (1 - config.mediaZoom) * e})`;
+
+        // Scrim opacity
+        if (scrim) {
+          scrim.style.opacity = `${config.overlayScrim * e}`;
         }
-        requestAnimationFrame(update);
+
+        // Title lifts away and fades out
+        if (title) {
+          const out = smoothstep(0.1, 0.45, p);
+          title.style.opacity = `${1 - out}`;
+          title.style.transform = `translate3d(0, ${-30 * out}px, 0) scale(${1 + 0.05 * out})`;
+        }
+
+        // Hint fades out immediately
+        if (hint) {
+          const gone = smoothstep(0, 0.12, p);
+          hint.style.opacity = `${1 - gone}`;
+          hint.style.transform = `translate3d(0, ${10 * gone}px, 0)`;
+        }
+
+        // Overlay credentials and button fade in
+        if (overlay) {
+          const inn = smoothstep(0.45, 0.85, p);
+          overlay.style.opacity = `${inn}`;
+          overlay.style.transform = `translate3d(0, ${18 * (1 - inn)}px, 0)`;
+          overlay.style.pointerEvents = inn > 0.5 ? 'auto' : 'none';
+        }
+      }
+
+      function measure() {
+        stageH = window.innerHeight;
+        stage.style.height = `${stageH}px`;
+        track.style.height = `${stageH * (1 + Math.max(0, config.scrollDistance) + Math.max(0, config.holdDistance))}px`;
+
+        config.startWidth = window.innerWidth < 768 ? 84 : 44;
+        config.startHeight = window.innerWidth < 768 ? 64 : 62;
+      }
+
+      function readProgress() {
+        if (!config.enabled) return 1;
+        const span = stageH * Math.max(0.01, config.scrollDistance);
+        const top = track.getBoundingClientRect().top;
+        return clamp(-top / span, 0, 1);
+      }
+
+      function tick() {
+        const k = config.smoothing <= 0 ? 1 : 1 - Math.exp(-1 / (60 * config.smoothing));
+        currentProgress += (targetProgress - currentProgress) * k;
+        if (Math.abs(targetProgress - currentProgress) < 0.0004) {
+          currentProgress = targetProgress;
+          isRunning = false;
+        }
+        applyProgress(currentProgress);
+
+        // Also sync frame scrubbing with scroll
+        targetFrame = currentProgress * (TOTAL_FRAMES - 1);
+        currentFrame += (targetFrame - currentFrame) * 0.12;
+        renderFrame(Math.max(0, Math.min(TOTAL_FRAMES - 1, Math.round(currentFrame))));
+
+        if (isRunning) {
+          rafId = requestAnimationFrame(tick);
+        }
+      }
+
+      function kick() {
+        if (isRunning) return;
+        isRunning = true;
+        rafId = requestAnimationFrame(tick);
       }
 
       function onScroll() {
-        const rect = brokerSection.getBoundingClientRect();
+        const rect = root.getBoundingClientRect();
         isVisible = (rect.top < window.innerHeight && rect.bottom > 0);
 
         if (isVisible) {
-          isUserScrolling = true;
-          clearTimeout(scrollTimeout);
-          scrollTimeout = setTimeout(() => {
-            isUserScrolling = false;
-          }, 350);
-
-          const totalDistance = window.innerHeight + rect.height;
-          const currentProgress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / totalDistance));
-          targetFrame = currentProgress * (TOTAL_FRAMES - 1);
+          targetProgress = readProgress();
+          kick();
         }
+      }
+
+      function onResize() {
+        measure();
+        resizeMedia();
+        targetProgress = readProgress();
+        currentProgress = targetProgress;
+        applyProgress(currentProgress);
       }
 
       function preload() {
@@ -1844,26 +1804,28 @@
           const img = new Image();
           img.src = getFrameUrl(i);
           img.onload = () => {
-            if (i === 0) render(0);
+            if (i === 0) renderFrame(0);
           };
           images[i] = img;
         }
       }
 
-      window.addEventListener('resize', resize);
+      measure();
+      resizeMedia();
+      preload();
+      targetProgress = readProgress();
+      currentProgress = targetProgress;
+      applyProgress(currentProgress);
+
       if (lenis) {
         lenis.on('scroll', onScroll);
       } else {
         window.addEventListener('scroll', onScroll, { passive: true });
       }
-
-      resize();
-      preload();
-      onScroll();
-      requestAnimationFrame(update);
+      window.addEventListener('resize', onResize);
     })();
 
-    // 5. Interactive Calculator Logic
+    // 4. Interactive Calculator Logic
     const rentSlider = document.getElementById('rentSlider');
     const yearsSlider = document.getElementById('yearsSlider');
     const rentDisplay = document.getElementById('rentDisplay');
@@ -1899,7 +1861,7 @@
       updateCalc();
     }
 
-    // 6. FAQ Accordion Logic
+    // 5. FAQ Accordion Logic
     const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach(item => {
       const question = item.querySelector('.faq-question');
@@ -1912,7 +1874,7 @@
       });
     });
 
-    // 7. Staggered Fade-Up Observer
+    // 6. Staggered Fade-Up Observer
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
